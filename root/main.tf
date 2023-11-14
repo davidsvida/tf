@@ -7,8 +7,6 @@ module "vpc" {
     pub_sub_2b_cidr = var.pub_sub_2b_cidr
     pri_sub_3a_cidr = var.pri_sub_3a_cidr
     pri_sub_4b_cidr = var.pri_sub_4b_cidr
-    pri_sub_5a_cidr = var.pri_sub_5a_cidr
-    pri_sub_6b_cidr = var.pri_sub_6b_cidr
 }
 
 module "nat" {
@@ -20,8 +18,6 @@ module "nat" {
   vpc_id        = module.vpc.vpc_id
   pri_sub_3a_id = module.vpc.pri_sub_3a_id
   pri_sub_4b_id = module.vpc.pri_sub_4b_id
-  pri_sub_5a_id = module.vpc.pri_sub_5a_id
-  pri_sub_6b_id = module.vpc.pri_sub_6b_id
 }
 
 module "security-group" {
@@ -57,14 +53,7 @@ module "asg" {
 
 # creating RDS instance
 
-module "rds" {
-  source         = "../modules/rds"
-  db_sg_id       = module.security-group.db_sg_id
-  pri_sub_5a_id = module.vpc.pri_sub_5a_id
-  pri_sub_6b_id = module.vpc.pri_sub_6b_id
-  db_username    = var.db_username
-  db_password    = var.db_password
-}
+
 
 
 # create cloudfront distribution 

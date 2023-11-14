@@ -24,13 +24,6 @@ output "pri_sub_4b_id" {
   value = aws_subnet.pri_sub_4b.id
 }
 
-output "pri_sub_5a_id" {
-  value = aws_subnet.pri_sub_5a.id
-}
-
-output "pri_sub_6b_id" {
-    value = aws_subnet.pri_sub_6b.id 
-}
 
 output "igw_id" {
     value = aws_internet_gateway.internet_gateway

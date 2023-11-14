@@ -83,14 +83,3 @@ resource "aws_route_table" "pri-rt-b" {
   }
 }
 
-# associate private subnet pri-sub-5a with private route Pri-rt-b
-resource "aws_route_table_association" "pri-sub-5a-with-pri-rt-b" {
-  subnet_id         = var.pri_sub_5a_id
-  route_table_id    = aws_route_table.pri-rt-b.id
-}
-
-# associate private subnet pri-sub-6b with private route table Pri-rt-b
-resource "aws_route_table_association" "pri-sub-6b-with-pri-rt-b" {
-  subnet_id         = var.pri_sub_6b_id
-  route_table_id    = aws_route_table.pri-rt-b.id
-}
