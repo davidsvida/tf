@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-URL='https://www.tooplate.com/zip-templates/2131_wedding_lite.zip'
-ART_NAME='2131_wedding_lite'
+URL='https://github.com/davidsvida/tetrisjs/archive/refs/heads/main.zip'
+ART_NAME='tetrisjs-main'
 TEMPDIR="/tmp/webfiles"
 
 # Set Variables for Ubuntu
