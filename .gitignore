@@ -1,1 +1,4 @@
 .DS_Store
+modules/key/client_key
+.gitignore
+modules/key/client_key.pub
