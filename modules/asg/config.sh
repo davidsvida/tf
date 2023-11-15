@@ -38,13 +38,16 @@ echo
 wget $URL > /dev/null
 unzip $ART_NAME.zip > /dev/null
 sudo cp -r $ART_NAME/* /var/www/html/
+sudo chown -R www-data:www-data /var/www/html
+sudo find /var/www/html -type d -exec chmod 755 {} \;
+sudo find /var/www/html -type f -exec chmod 644 {} \;
 echo
 
 # Bounce Service
 echo "########################################"
 echo "Restarting HTTPD service"
 echo "########################################"
-systemctl restart $SVC
+sudo systemctl restart $SVC
 echo
 
 # Clean Up
