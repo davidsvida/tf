@@ -4,12 +4,19 @@ resource "aws_launch_template" "lt_name" {
   instance_type = var.cpu
   key_name      = var.key_name
   user_data     = filebase64("../modules/asg/config.sh")
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ssm_instance_profile.name
+  }
 
 
   vpc_security_group_ids = [var.client_sg_id]
   tags = {
     Name = "${var.project_name}-tpl"
   }
+}
+resource "aws_iam_instance_profile" "ssm_instance_profile" {
+  name = "${var.project_name}-instance-profile"
+  role = aws_iam_role.ssm_role.name
 }
 
 resource "aws_autoscaling_group" "asg_name" {
@@ -94,4 +101,26 @@ resource "aws_cloudwatch_metric_alarm" "scale_down_alarm" {
   }
   actions_enabled = true
   alarm_actions   = [aws_autoscaling_policy.scale_down.arn]
+}
+
+resource "aws_iam_role" "ssm_role" {
+  name = "${var.project_name}-ssm-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        },
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_policy_attachment" {
+  role       = aws_iam_role.ssm_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
