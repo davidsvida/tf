@@ -1,58 +1,43 @@
 #!/bin/bash
 
-
 URL='https://github.com/davidsvida/tetrisjs/archive/refs/heads/main.zip'
 ART_NAME='tetrisjs-main'
 TEMPDIR="/tmp/webfiles"
-
-# Set Variables for Ubuntu
 PACKAGE="apache2 wget unzip"
 SVC="apache2"
 
-
-echo "Running Setup on Ubuntu"
+echo "Running setup on Ubuntu"
 # Installing Dependencies
-echo "########################################"
-echo "Installing packages."
-echo "########################################"
+echo "Installing packages..."
 sudo apt update
-sudo apt install $PACKAGE -y > /dev/null
-echo
+sudo apt install -y $PACKAGE
 
 # Start & Enable Service
-echo "########################################"
-echo "Start & Enable HTTPD Service"
-echo "########################################"
+echo "Starting and enabling HTTPD service..."
 sudo systemctl start $SVC
 sudo systemctl enable $SVC
-echo
 
 # Creating Temp Directory
-echo "########################################"
-echo "Starting Artifact Deployment"
-echo "########################################"
+echo "Starting artifact deployment..."
 mkdir -p $TEMPDIR
 cd $TEMPDIR
-echo
 
-wget $URL > /dev/null
-unzip $ART_NAME.zip > /dev/null
+# Download and unpack the artifact
+wget -q $URL -O "$ART_NAME.zip"
+unzip -q "$ART_NAME.zip"
+
+# Clean /var/www/html and move new files in
+echo "Deploying new files..."
+sudo rm -rf /var/www/html/*
 sudo cp -r $ART_NAME/* /var/www/html/
-sudo chown -R www-data:www-data /var/www/html
+sudo chown -R www-data:www-data /var/www/html/
 sudo find /var/www/html -type d -exec chmod 755 {} \;
 sudo find /var/www/html -type f -exec chmod 644 {} \;
-echo
 
-# Bounce Service
-echo "########################################"
-echo "Restarting HTTPD service"
-echo "########################################"
+
+echo "Restarting HTTPD service..."
 sudo systemctl restart $SVC
-echo
 
-# Clean Up
-echo "########################################"
-echo "Removing Temporary Files"
-echo "########################################"
+echo "Removing temporary files..."
 rm -rf $TEMPDIR
-echo "cleanup done"
+echo "Setup complete."
